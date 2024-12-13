@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blink 182 Phonics Quiz</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+    const PhonicsQuiz = () => {
+        const questions = [
+            {
+                word: 'Told',
+                options: [
+                    { text: '/təʊld/', correct: false },
+                    { text: '/toʊld/', correct: true },
+                    { text: '/təuld/', correct: false },
+                    { text: '/tould/', correct: false }
+                ]
+            },
+            {
+                word: 'Recognize',
+                options: [
+                    { text: '/ˈrek.əɡ.naɪz/', correct: false },
+                    { text: '/ˈrek.əɡ.naɪs/', correct: false },
+                    { text: '/ˈrek.oʊɡ.naɪz/', correct: false },
+                    { text: '/ˈrɪk.əɡ.naɪz/', correct: true }
+                ]
+            },
+            {
+                word: 'Wait',
+                options: [
+                    { text: './wəɪt/', correct: false },
+                    { text: '/weit/', correct: false },
+                    { text: '/weɪt/', correct: true },
+                    { text: '/wɜ:ɪt/', correct: false }
+                ]
+            },
+            {
+                word: 'Shouldn\'t',
+                options: [
+                    { text: '/ˈʃʊd.ənt/', correct: true },
+                    { text: '/ˈʃud.ənt/', correct: false },
+                    { text: '/ˈʃʊd.ent/', correct: false },
+                    { text: '/ˈʒʊd.ənt/', correct: false }
+                ]
+            },
+            {
+                word: 'Still',
+                options: [
+                    { text: '/stɪl/', correct: true },
+                    { text: '/stil/', correct: false },
+                    { text: '\'es.til/', correct: false },
+                    { text: '/es\'til/', correct: false }
+                ]
+            },
+            {
+                word: 'Strangers',
+                options: [
+                    { text: '/ˈes.treɪn.dʒɚs/', correct: false },
+                    { text: '/ˈstreɪn.dʒɚz/', correct: true },
+                    { text: '/ˈstreɪn.gɚz/', correct: false },
+                    { text: '/ˈstreɪn.dʒers/', correct: false }
+                ]
+            },
+            {
+                word: 'Couldn\'t',
+                options: [
+                    { text: '/ˈkud.ənt/', correct: false },
+                    { text: '/kʊd\'ənt/', correct: false },
+                    { text: '/ˈkʊd.ent/', correct: false },
+                    { text: '/ˈkʊd.ənt/', correct: true }
+                ]
+            },
+            {
+                word: 'Different',
+                options: [
+                    { text: '/dɪf.ɚ\'ənt/', correct: false },
+                    { text: '/dɪf\'ɚ.ənt/', correct: false },
+                    { text: '/ˈdɪf.ɚnt/', correct: true },
+                    { text: '/ˈdɪf.er.ənt/', correct: false }
+                ]
+            },
+            {
+                word: 'Act',
+                options: [
+                    { text: '/ɒ:kt/', correct: false },
+                    { text: '/akt/', correct: false },
+                    { text: '/ʌkt/', correct: false },
+                    { text: '/ækt/', correct: true }
+                ]
+            },
+            {
+                word: 'Admit',
+                options: [
+                    { text: '/ədˈmɪt/', correct: true },
+                    { text: '/adˈmɪt/', correct: false },
+                    { text: '\'əd.mɪt/', correct: false },
+                    { text: '/ədˈmi:t/', correct: false }
+                ]
+            },
+            {
+                word: 'Gotta',
+                options: [
+                    { text: '/ɡɑː\'t̬ə/', correct: false },
+                    { text: '/ˈɡɑː.rə/', correct: false },
+                    { text: '/ˈɡɑː.t̬ə/', correct: true },
+                    { text: '/ˈɡa.t̬ə/', correct: false }
+                ]
+            },
+            {
+                word: 'Wonder',
+                options: [
+                    { text: '/ˈwʌn.dɚ/', correct: true },
+                    { text: '/ˈwæn.dɚ/', correct: false },
+                    { text: '/wʌn\'dɚ/', correct: false },
+                    { text: '/ˈwʌn.der/', correct: false }
+                ]
+            }
+        ];
+
+        const [currentQuestion, setCurrentQuestion] = React.useState(0);
+        const [score, setScore] = React.useState(0);
+        const [showScore, setShowScore] = React.useState(false);
+        const [selectedAnswer, setSelectedAnswer] = React.useState(null);
+        const [timeLimit, setTimeLimit] = React.useState(null);
+        const [timeRemaining, setTimeRemaining] = React.useState(null);
+
+        const handleAnswerClick = (option) => {
+            setSelectedAnswer(option);
+            
+            if (option.correct) {
+                setScore(score + 1);
+            }
+
+            setTimeout(() => {
+                const nextQuestion = currentQuestion + 1;
+                if (nextQuestion < questions.length) {
+                    setCurrentQuestion(nextQuestion);
+                    setSelectedAnswer(null);
+                } else {
+                    setShowScore(true);
+                }
+            }, 1000);
+        };
+
+        const resetQuiz = () => {
+            setCurrentQuestion(0);
+            setScore(0);
+            setShowScore(false);
+            setSelectedAnswer(null);
+            setTimeRemaining(timeLimit);
+        };
+
+        const handleTimeLimitChange = (limit) => {
+            setTimeLimit(limit ? limit * 60 : null);
+            setTimeRemaining(limit ? limit * 60 : null);
+        };
+
+        React.useEffect(() => {
+            let timer;
+            if (timeRemaining !== null && timeRemaining > 0 && !showScore) {
+                timer = setInterval(() => {
+                    setTimeRemaining(prev => prev - 1);
+                }, 1000);
+            } else if (timeRemaining === 0) {
+                setShowScore(true);
+            }
+            return () => clearInterval(timer);
+        }, [timeRemaining, showScore]);
+
+        return (
+            <div className="w-full max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg">
+                <h1 className="text-2xl font-bold text-center mb-6">
+                    Blink 182 Phonics Quiz
+                </h1>
+                {!showScore ? (
+                    <>
+                        <div className="flex justify-between mb-4">
+                            <div>
+                                <i className="fas fa-clock inline-block mr-2"></i>
+                                Time Limit:
+                                {[null, 3, 5, 7, 10].map((limit) => (
+                                    <button
+                                        key={limit}
+                                        className={`ml-2 px-2 py-1 rounded ${timeLimit === (limit ? limit * 60 : null) ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                        onClick={() => handleTimeLimitChange(limit)}
+                                    >
+                                        {limit ? `${limit} min` : 'No Limit'}
+                                    </button>
+                                ))}
+                            </div>
+                            {timeLimit && (
+                                <div className="text-red-500">
+                                    Time: {Math.floor(timeRemaining / 60)}:
+                                    {(timeRemaining % 60).toString().padStart(2, '0')}
+                                </div>
+                            )}
+                        </div>
+                        <div className="mb-4">
+                            <h2 className="text-xl font-bold">
+                                Word: {questions[currentQuestion].word}
+                            </h2>
+                            <p className="text-sm text-gray-600">
+                                Select the correct phonetic pronunciation
+                            </p>
+                        </div>
+                        <div className="space-y-2">
+                            {questions[currentQuestion].options.map((option, index) => (
+                                <button
+                                    key={index}
+                                    className={`w-full p-2 rounded text-left 
+                                        ${selectedAnswer === option 
+                                            ? (option.correct 
+                                                ? 'bg-green-500 text-white' 
+                                                : 'bg-red-500 text-white')
+                                            : 'bg-gray-200 hover:bg-gray-300'
+                                        }`}
+                                    onClick={() => handleAnswerClick(option)}
+                                    disabled={selectedAnswer !== null}
+                                >
+                                    {option.text}
+                                    {selectedAnswer === option && (
+                                        <i className={`float-right ${option.correct ? 'fas fa-check-circle text-white' : 'fas fa-times-circle text-white'}`}></i>
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="mt-4 text-center text-sm">
+                            Question {currentQuestion + 1} of {questions.length}
+                        </div>
+                    </>
+                ) : (
+                    <div className="text-center">
+                        <h2 className="text-2xl font-bold mb-4">Quiz Completed!</h2>
+                        <p className="text-xl mb-4">
+                            Your Score: {score} / {questions.length}
+                        </p>
+                        <button 
+                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                            onClick={resetQuiz}
+                        >
+                            Restart Quiz
+                        </button>
+                    </div>
+                )}
+                <div className="mt-4 text-xs text-gray-500 text-center">
+                    © 2024 Daniel Rojas :: TΣʃ :: ✉ daniel.rojas.ext@ihbogota.com
+                </div>
+            </div>
+        );
+    };
+
+    ReactDOM.render(<PhonicsQuiz />, document.getElementById('root'));
+    </script>
+</body>
+</html>
